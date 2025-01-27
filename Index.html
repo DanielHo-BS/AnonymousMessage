@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Message</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+      }
+
+      h1 {
+        color: #004B97;
+        text-align: center;
+      }
+
+      .container {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+      }
+
+      label {
+        font-size: 16px;
+        margin-bottom: 8px;
+        display: block;
+        color: #555;
+      }
+
+      input, textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        box-sizing: border-box;
+        background-color: #f9f9f9;
+      }
+
+      input:focus, textarea:focus {
+        outline: none;
+        border-color: #003D79;
+        background-color: #fff;
+      }
+
+      button {
+        padding: 10px 15px;
+        border-radius: 5px;
+        border: none;
+        background-color: #003D79;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      button:hover {
+        background-color: #004B97;
+      }
+
+      .button-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .button-container button {
+        width: 48%;
+      }
+
+      .message-box {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #888;
+        text-align: center;
+      }
+    </style>
+    <script>
+      // 提交留言到 Google Sheets
+      function submitMessage() {
+        let name = document.getElementById('name').value;
+        const message = document.getElementById('message').value;
+
+        // 如果名稱欄位為空，將其設置為 "匿名"
+        if (!name.trim()) {
+          name = "匿名";
+        }
+
+        // 提交到 Google Sheets
+        google.script.run.withSuccessHandler(() => {
+          alert('Message submitted successfully!');
+          document.getElementById('name').value = '';
+          document.getElementById('message').value = '';
+        }).submitToSheet(name, message);
+      }
+
+      // 取得 Web App URL 並跳轉到 view 頁面
+      function goToView() {
+        google.script.run.withSuccessHandler((url) => {
+          window.top.location.href = url + "?page=view";  // 動態跳轉
+        }).getWebAppUrl();
+      }
+    </script>
+  </head>
+  <body>
+    <h1>留言提交</h1>
+    <div class="container">
+      <label for="name">名稱：</label>
+      <input type="text" id="name" placeholder="請輸入名稱" required><br>
+      
+      <label for="message">留言：</label>
+      <textarea id="message" placeholder="請輸入留言" required></textarea><br>
+
+      <div class="button-container">
+        <button onclick="submitMessage()">提交留言</button>
+        <button onclick="goToView()">查看留言</button>
+      </div>
+    </div>
+    <div class="message-box">
+      <p>感謝您的留言，請點擊「查看留言」來瀏覽其他人留下的訊息。</p>
+    </div>
+  </body>
+</html>
