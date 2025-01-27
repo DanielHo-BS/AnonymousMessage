@@ -2,6 +2,10 @@
 
 這是一個`Google App Script`架設留言系統網站的範本，透過**Google試算表**的存取作為簡易DB，以網頁上瀏覽匿名留言板。
 
+![image](./Images/Index.png)
+
+![image](./Images/View.png)
+
 ## 架構
 
 主要文件有以下三個:
